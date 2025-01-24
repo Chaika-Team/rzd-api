@@ -1,0 +1,1004 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "RZD API",
+        "description": "API для получения информации о маршрутах поездов, вагонах и станциях.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.rzd.ru",
+            "description": "Cервер РЖД"
+        }
+    ],
+    "paths": {
+        "/api/trainRoutes": {
+            "get": {
+                "tags": [
+                    "RZD API"
+                ],
+                "summary": "Получение маршрутов в одну точку",
+                "description": "Возвращает маршруты поездов из одной точки в другую.",
+                "operationId": "6f6d686df3a092dbd2c508c9572640a9",
+                "parameters": [
+                    {
+                        "name": "code0",
+                        "in": "query",
+                        "description": "Код станции отправления",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code1",
+                        "in": "query",
+                        "description": "Код станции прибытия",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "description": "Направление (0 - в одну сторону, 1 - туда-обратно)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "tfl",
+                        "in": "query",
+                        "description": "Тип поезда (3 - поезда и электрички, 2 - электрички, 1 - поезда)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 3
+                        }
+                    },
+                    {
+                        "name": "checkSeats",
+                        "in": "query",
+                        "description": "Проверка наличия свободных мест (1 - с билетами, 0 - все поезда)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "dt0",
+                        "in": "query",
+                        "description": "Дата отправления в формате d.m.Y",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "md",
+                        "in": "query",
+                        "description": "Маршруты с пересадками (1 - с пересадками, 0 - только прямые рейсы)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список маршрутов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TrainRoute"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Некорректный код станции отправления"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/trainRoutesReturn": {
+            "get": {
+                "tags": [
+                    "RZD API"
+                ],
+                "summary": "Получение маршрутов туда-обратно",
+                "description": "Возвращает маршруты поездов туда и обратно между двумя точками.",
+                "operationId": "8714399caacfd5e9c0d6ba47c29e9ea6",
+                "parameters": [
+                    {
+                        "name": "code0",
+                        "in": "query",
+                        "description": "Код станции отправления",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code1",
+                        "in": "query",
+                        "description": "Код станции прибытия",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "description": "Направление (0 - в одну сторону, 1 - туда-обратно)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "tfl",
+                        "in": "query",
+                        "description": "Тип поезда (3 - поезда и электрички, 2 - электрички, 1 - поезда)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 3
+                        }
+                    },
+                    {
+                        "name": "checkSeats",
+                        "in": "query",
+                        "description": "Проверка наличия свободных мест (1 - с билетами, 0 - все поезда)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "dt0",
+                        "in": "query",
+                        "description": "Дата отправления в формате d.m.Y",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "dt1",
+                        "in": "query",
+                        "description": "Дата возврата в формате d.m.Y",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "default": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список маршрутов туда и обратно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "forward": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TrainRoute"
+                                            }
+                                        },
+                                        "back": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TrainRoute"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Некорректный код станции отправления"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/trainCarriages": {
+            "get": {
+                "tags": [
+                    "RZD API"
+                ],
+                "summary": "Получение списка вагонов",
+                "description": "Возвращает список вагонов выбранного поезда с информацией о свободных местах и тарифах.",
+                "operationId": "7f548a8677d68665a2296c5e7d8812d2",
+                "parameters": [
+                    {
+                        "name": "code0",
+                        "in": "query",
+                        "description": "Код станции отправления",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code1",
+                        "in": "query",
+                        "description": "Код станции прибытия",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tnum0",
+                        "in": "query",
+                        "description": "Номер поезда",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "time0",
+                        "in": "query",
+                        "description": "Время отправления",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "time"
+                        }
+                    },
+                    {
+                        "name": "dt0",
+                        "in": "query",
+                        "description": "Дата отправления в формате d.m.Y",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "description": "Направление (0 - в одну сторону, 1 - туда-обратно)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список вагонов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TrainCarriages"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Некорректный номер поезда"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/trainStationList": {
+            "get": {
+                "tags": [
+                    "RZD API"
+                ],
+                "summary": "Получение списка станций",
+                "description": "Возвращает список всех станций в текущем маршруте движения поезда.",
+                "operationId": "914eec28b04bf89e149ccf33cde9074b",
+                "parameters": [
+                    {
+                        "name": "trainNumber",
+                        "in": "query",
+                        "description": "Номер поезда",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "depDate",
+                        "in": "query",
+                        "description": "Дата отправления в формате d.m.Y",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список станций",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "train": {
+                                            "$ref": "#/components/schemas/TrainInfo"
+                                        },
+                                        "routes": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Route"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Некорректный номер поезда"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/stationCode": {
+            "get": {
+                "tags": [
+                    "RZD API"
+                ],
+                "summary": "Получение списка кодов станций",
+                "description": "Возвращает список кодов станций на основе части названия станции.",
+                "operationId": "fc01333b9cbac00aa00730b157411cfe",
+                "parameters": [
+                    {
+                        "name": "stationNamePart",
+                        "in": "query",
+                        "description": "Часть названия станции (минимум 2 символа)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "compactMode",
+                        "in": "query",
+                        "description": "Режим компактного отображения (y - да)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "y"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список кодов станций",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/StationCode"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Необходим минимум 2 символа для поиска"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/train_carriages": {
+            "get": {
+                "summary": "Получение списка вагонов",
+                "description": "Возвращает список вагонов выбранного поезда.",
+                "operationId": "a31938deb52a0af0d5e020795d6d0b09",
+                "parameters": [
+                    {
+                        "name": "code0",
+                        "in": "query",
+                        "description": "Код станции отправления",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code1",
+                        "in": "query",
+                        "description": "Код станции прибытия",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tnum0",
+                        "in": "query",
+                        "description": "Номер поезда",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "time0",
+                        "in": "query",
+                        "description": "Время отправления",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "time"
+                        }
+                    },
+                    {
+                        "name": "dt0",
+                        "in": "query",
+                        "description": "Дата отправления в формате d.m.Y",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "default": "дата на завтра d.m.Y"
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "description": "Направление (0 - в одну сторону, 1 - туда-обратно)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список вагонов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TrainCarriages"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Некорректный номер поезда"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/train_routes": {
+            "get": {
+                "summary": "Получение маршрутов поездов",
+                "description": "Возвращает маршруты поездов между двумя станциями.",
+                "operationId": "3b750a6a23987d089e0c307edc67816a",
+                "parameters": [
+                    {
+                        "name": "code0",
+                        "in": "query",
+                        "description": "Код станции отправления",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code1",
+                        "in": "query",
+                        "description": "Код станции прибытия",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "description": "Направление (0 - в одну сторону, 1 - туда-обратно)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "tfl",
+                        "in": "query",
+                        "description": "Тип поезда (3 - поезда и электрички, 2 - электрички, 1 - поезда)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 3
+                        }
+                    },
+                    {
+                        "name": "checkSeats",
+                        "in": "query",
+                        "description": "Проверка наличия свободных мест (1 - с билетами, 0 - все поезда)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "dt0",
+                        "in": "query",
+                        "description": "Дата отправления в формате d.m.Y",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "md",
+                        "in": "query",
+                        "description": "Маршруты с пересадками (1 - с пересадками, 0 - только прямые рейсы)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список маршрутов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TrainRoute"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Некорректный код станции отправления"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "TrainStation": {
+                "properties": {
+                    "Station": {
+                        "description": "Название станции",
+                        "type": "string"
+                    },
+                    "Code": {
+                        "description": "Код станции",
+                        "type": "string"
+                    },
+                    "ArvTime": {
+                        "description": "Время прибытия",
+                        "type": "string"
+                    },
+                    "WaitingTime": {
+                        "description": "Время стоянки",
+                        "type": "string"
+                    },
+                    "DepTime": {
+                        "description": "Время отправления",
+                        "type": "string"
+                    },
+                    "Distance": {
+                        "description": "Пройденная дистанция",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "TrainRoute": {
+                "required": [
+                    "route0",
+                    "route1",
+                    "date0",
+                    "time0",
+                    "number"
+                ],
+                "properties": {
+                    "route0": {
+                        "description": "Код станции отправления",
+                        "type": "string"
+                    },
+                    "route1": {
+                        "description": "Код станции прибытия",
+                        "type": "string"
+                    },
+                    "date0": {
+                        "description": "Дата отправления",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "time0": {
+                        "description": "Время отправления",
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "number": {
+                        "description": "Номер поезда",
+                        "type": "string"
+                    },
+                    "from": {
+                        "description": "Название станции отправления",
+                        "type": "string"
+                    },
+                    "where": {
+                        "description": "Название станции прибытия",
+                        "type": "string"
+                    },
+                    "date": {
+                        "description": "Дата отправления",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fromCode": {
+                        "description": "Код станции отправления",
+                        "type": "string"
+                    },
+                    "whereCode": {
+                        "description": "Код станции прибытия",
+                        "type": "string"
+                    },
+                    "time1": {
+                        "description": "Время прибытия",
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "timeInWay": {
+                        "description": "Время в пути",
+                        "type": "string"
+                    },
+                    "brand": {
+                        "description": "Название поезда",
+                        "type": "string"
+                    },
+                    "carrier": {
+                        "description": "Тип поезда",
+                        "type": "string"
+                    },
+                    "cars": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Car"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "TrainCarriages": {
+                "required": [
+                    "cars"
+                ],
+                "properties": {
+                    "cars": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Carriage"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Carriage": {
+                "required": [
+                    "cnumber",
+                    "type",
+                    "typeLoc",
+                    "clsType",
+                    "tariff",
+                    "seats"
+                ],
+                "properties": {
+                    "cnumber": {
+                        "description": "Номер вагона",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Тип вагона",
+                        "type": "string"
+                    },
+                    "typeLoc": {
+                        "description": "Полное наименование",
+                        "type": "string"
+                    },
+                    "clsType": {
+                        "description": "Класс обслуживания",
+                        "type": "string"
+                    },
+                    "tariff": {
+                        "description": "Стоимость билета",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "seats": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Seat"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Seat": {
+                "required": [
+                    "places",
+                    "tariff",
+                    "type",
+                    "free",
+                    "label"
+                ],
+                "properties": {
+                    "places": {
+                        "description": "Список свободных мест",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "tariff": {
+                        "description": "Цена за место",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "type": {
+                        "description": "Сокращенное наименование места",
+                        "type": "string"
+                    },
+                    "free": {
+                        "description": "Количество свободных мест",
+                        "type": "integer"
+                    },
+                    "label": {
+                        "description": "Полное наименование места",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Car": {
+                "properties": {
+                    "freeSeats": {
+                        "description": "Количество свободных мест",
+                        "type": "integer"
+                    },
+                    "itype": {
+                        "description": "Тип вагона",
+                        "type": "string"
+                    },
+                    "servCls": {
+                        "description": "Класс обслуживания (например, 2Ю, 2Ж)",
+                        "type": "string"
+                    },
+                    "tariff": {
+                        "description": "Стоимость билета",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "pt": {
+                        "description": "Баллы",
+                        "type": "integer"
+                    },
+                    "typeLoc": {
+                        "description": "Полное наименование типа (Плацкартный, СВ, Купе, Люкс)",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Сокращенное наименование (Купе, плац, люкс)",
+                        "type": "string"
+                    },
+                    "disabledPerson": {
+                        "description": "Флаг обозначающий места для инвалидов",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "TrainCarriage": {
+                "properties": {
+                    "cars": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Car"
+                        }
+                    },
+                    "functionBlocks": {
+                        "type": "array",
+                        "items": {
+                            "description": "Блоки функций вагона",
+                            "type": "object"
+                        }
+                    },
+                    "schemes": {
+                        "type": "array",
+                        "items": {
+                            "description": "Схемы вагонов",
+                            "type": "object"
+                        }
+                    },
+                    "companies": {
+                        "type": "array",
+                        "items": {
+                            "description": "Компании страхователи",
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "TrainInfo": {
+                "properties": {
+                    "number": {
+                        "description": "Номер поезда",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Route": {
+                "properties": {
+                    "station": {
+                        "description": "Название станции",
+                        "type": "string"
+                    },
+                    "arrival_time": {
+                        "description": "Время прибытия",
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "departure_time": {
+                        "description": "Время отправления",
+                        "type": "string",
+                        "format": "time"
+                    }
+                },
+                "type": "object"
+            },
+            "StationCode": {
+                "properties": {
+                    "station": {
+                        "description": "Название станции",
+                        "type": "string"
+                    },
+                    "code": {
+                        "description": "Код станции",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "RZD API",
+            "description": "API для взаимодействия с сайтом rzd.ru"
+        }
+    ]
+}

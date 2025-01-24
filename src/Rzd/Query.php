@@ -6,8 +6,21 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\GuzzleException;
+use OpenApi\Attributes as OA;
 use RuntimeException;
 
+#[OA\Schema(
+    schema: "TrainStation",
+    type: "object",
+    properties: [
+        new OA\Property(property: "Station", type: "string", description: "Название станции"),
+        new OA\Property(property: "Code", type: "string", description: "Код станции"),
+        new OA\Property(property: "ArvTime", type: "string", description: "Время прибытия"),
+        new OA\Property(property: "WaitingTime", type: "string", description: "Время стоянки"),
+        new OA\Property(property: "DepTime", type: "string", description: "Время отправления"),
+        new OA\Property(property: "Distance", type: "integer", description: "Пройденная дистанция")
+    ]
+)]
 class Query
 {
     private Client $client;
@@ -22,10 +35,10 @@ class Query
     public function __construct(public Config $config)
     {
         $this->client = new Client([
-            'timeout'         => $this->config->getTimeout(),
-            'proxy'           => $this->config->getProxy(),
-            'cookie'          => true,
-            'verify'          => false,
+            'timeout' => $this->config->getTimeout(),
+            'proxy' => $this->config->getProxy(),
+            'cookie' => true,
+            'verify' => false,
             'allow_redirects' => true,
         ]);
 
@@ -79,7 +92,7 @@ class Query
             }
 
             $options = [
-                'debug'   => $this->config->getDebugMode(),
+                'debug' => $this->config->getDebugMode(),
                 'headers' => $this->headers,
                 'cookies' => $this->cookieJar,
             ];
@@ -134,3 +147,4 @@ class Query
         throw new RuntimeException('Rid not found!');
     }
 }
+?>

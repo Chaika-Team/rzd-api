@@ -26,12 +26,12 @@ class ApiTest extends TestCase
     public function testTrainRoutes(): void
     {
         $params = [
-            'dir'        => 0,
-            'tfl'        => 3,
+            'dir' => 0,
+            'tfl' => 3,
             'checkSeats' => 1,
-            'code0'      => '2004000',
-            'code1'      => '2000000',
-            'dt0'        => $this->date0->format('d.m.Y'),
+            'code0' => '2004000',
+            'code1' => '2000000',
+            'dt0' => $this->date0->format('d.m.Y'),
         ];
 
         $trainRoutes = $this->api->trainRoutes($params);
@@ -49,13 +49,13 @@ class ApiTest extends TestCase
     public function testTrainRoutesReturn(): void
     {
         $params = [
-            'dir'        => 1,
-            'tfl'        => 3,
+            'dir' => 1,
+            'tfl' => 3,
             'checkSeats' => 1,
-            'code0'      => '2004000',
-            'code1'      => '2000000',
-            'dt0'        => $this->date0->format('d.m.Y'),
-            'dt1'        => $this->date1->format('d.m.Y'),
+            'code0' => '2004000',
+            'code1' => '2000000',
+            'dt0' => $this->date0->format('d.m.Y'),
+            'dt1' => $this->date1->format('d.m.Y'),
         ];
 
         $trainRoutesReturn = $this->api->trainRoutesReturn($params);
@@ -74,22 +74,22 @@ class ApiTest extends TestCase
     public function testTrainCarriages(): void
     {
         $params = [
-            'dir'        => 0,
-            'tfl'        => 3,
+            'dir' => 0,
+            'tfl' => 3,
             'checkSeats' => 1,
-            'code0'      => '2004000',
-            'code1'      => '2000000',
-            'dt0'        => $this->date0->format('d.m.Y'),
+            'code0' => '2004000',
+            'code1' => '2000000',
+            'dt0' => $this->date0->format('d.m.Y'),
         ];
 
         $routes = $this->api->trainRoutes($params);
 
         if ($routes) {
             $params = [
-                'dir'   => 0,
+                'dir' => 0,
                 'code0' => '2004000',
                 'code1' => '2000000',
-                'dt0'   => $routes[0]->date0,
+                'dt0' => $routes[0]->date0,
                 'time0' => $routes[0]->time0,
                 'tnum0' => $routes[0]->number,
             ];
@@ -111,7 +111,7 @@ class ApiTest extends TestCase
     {
         $params = [
             'trainNumber' => '054Г',
-            'depDate'     => $this->date0->format('d.m.Y'),
+            'depDate' => $this->date0->format('d.m.Y'),
         ];
 
         $trainStationList = $this->api->trainStationList($params);
@@ -131,7 +131,7 @@ class ApiTest extends TestCase
     {
         $params = [
             'stationNamePart' => 'ЧЕБ',
-            'compactMode'     => 'y',
+            'compactMode' => 'y',
         ];
 
         $stationCode = $this->api->stationCode($params);
@@ -139,7 +139,7 @@ class ApiTest extends TestCase
         $this->assertIsArray($stationCode);
 
         $cities = [];
-        foreach($stationCode as $station) {
+        foreach ($stationCode as $station) {
             $cities[] = $station['station'];
         }
 

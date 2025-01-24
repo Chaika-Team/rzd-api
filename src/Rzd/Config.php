@@ -122,7 +122,7 @@ class Config
     }
 
     /**
-     * Set Referer
+     * Get Referer
      *
      * @return string|null
      */
@@ -131,3 +131,4 @@ class Config
         return $this->referer;
     }
 }
+?>

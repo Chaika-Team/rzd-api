@@ -16,15 +16,22 @@
         "ext-json": "*",
         "ext-curl": "*",
         "ext-mbstring": "*",
-        "guzzlehttp/guzzle": "^7.8"
-    },
+        "guzzlehttp/guzzle": "^7.8",
+        "swagger-api/swagger-ui": "^5.18"
+         },
     "require-dev": {
         "phpunit/phpunit": "^9.6",
-        "symfony/var-dumper": "^v7.0"
+        "symfony/var-dumper": "^v7.0",
+        "zircote/swagger-php": "^4.0"
     },
     "autoload": {
         "psr-4": {
-            "Rzd\\": "src/Rzd/"
+            "Rzd\\": "src/Rzd/",
+            "Rzd\\Controllers\\": "controllers/"
         }
+    },
+    "scripts": {
+        "swagger:generate": "php generate-docs.php",
+        "swagger:serve": "php -S localhost:8000 -t docs"
     }
 }
